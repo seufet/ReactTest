@@ -1,27 +1,24 @@
-const createError = require('http-errors');
+const appConfig = require('./config.js');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser'); 
-
-const mongoose = require('mongoose');
-
-const passport = require('passport');
+const expressSession = require('express-session');
+const favicon = require('serve-favicon');
 const LocalStrategy = require('passport-local').Strategy;
-
 const logger = require('morgan');
-
-const indexRouter = require('./routes/index');
-const api = require('./routes/api/index');
-const users = require('./routes/api/users');
-
-const app = express();
-
+const mongoose = require('mongoose');
+const passport = require('passport');
+const path = require('path');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const authentication = require('./routes/api/authentication');
+const indexRouter = require('./routes/index');
+const api = require('./routes/api/index');
+const users = require('./routes/api/users');
+const app = express();
 
 // Connect Mongoose
 mongoose.connect('mongodb://localhost/musiclist');
@@ -35,11 +32,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(require('express-session')({
-  secret: 'any random string can go here',
+// Express Session
+const sessionValues = {
+  cookie: {},
+  name: 'sessionId',
   resave: false,
-  saveUninitialized: false
-}));
+  saveUninitialized: true,
+  secret: appConfig.expressSession.secret,
+};
+app.use(expressSession(sessionValues));
 app.use(passport.initialize());
 app.use(passport.session());
 

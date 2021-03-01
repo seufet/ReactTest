@@ -8,6 +8,7 @@ const User = new Schema({
     firstName: String,
     lastName: String,
     email: String,
+    passwordReset: { type: String, select: false }, // select: prevents this from showing up unless asked for!
 });
 
 User.plugin(passportLocalMongoose);

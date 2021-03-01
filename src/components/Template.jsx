@@ -7,6 +7,7 @@ import ProfilePage from './account/ProfilePage';
 import LoginPage from './account/LoginPageContainer';
 import RegisterPage from './account/RegisterPageContainer';
 import RegistrationSuccessPage from './account/RegistrationSuccessPageContainer';
+import ResetPasswordPage from './account/ResetPasswordPageContainer';
 
 export default function Template(props) {
   const { authentication, progress } = props;
@@ -21,6 +22,7 @@ export default function Template(props) {
           <Route path="/account/profile/:id" component={ProfilePage} />
           <Route exact path="/account/register" component={RegisterPage} />
           <Route exact path="/account/registration-success" component={RegistrationSuccessPage} />
+          <Route exact path="/account/reset-password" component={ResetPasswordPage} />
         </section>
 
         <div className="loader-wrapper" style={progress > 0 ? { display: 'block' } : { display: 'none' }}>
