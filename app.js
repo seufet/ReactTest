@@ -14,16 +14,19 @@ const webpackConfig = require('./webpack.config');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
+// Route Files
+const api = require('./routes/api/index');
+const albums = require('./routes/api/albums');
 const authentication = require('./routes/api/authentication');
 const indexRouter = require('./routes/index');
-const api = require('./routes/api/index');
 const users = require('./routes/api/users');
-const app = express();
+const artists = require('./routes/api/artists');
 
 // Connect Mongoose
 mongoose.connect('mongodb://localhost/musiclist');
 
 // view engine setup
+const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -63,8 +66,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use('/api', api);
-app.use('/api/users', users);
+app.use('/api/albums', albums);
+app.use('/api/artists', artists);
 app.use('/api/authentication', authentication);
+app.use('/api/users', users);
 app.use('/*', indexRouter);
 
 // Configure Passport
